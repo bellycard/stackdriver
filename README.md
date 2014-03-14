@@ -1,4 +1,4 @@
-# Stackdriver API Library
+# [Stackdriver](http://www.stackdriver.com/) API Library
 
 A client library for accessing the Stackdriver API.
 
