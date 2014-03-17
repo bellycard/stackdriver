@@ -22,33 +22,33 @@ import (
 	"time"
 )
 
-type metric struct {
+type Metric struct {
 	// Timestamp in Unix time notation representing when the custom metric was collected.
 	// If value is over an hour before current time the measurement will be rejected.
-	collectedAt int64 `json:"collected_at"`
+	CollectedAt int64 `json:"collected_at"`
 	// Name of the custom metric as represented in the Stackdriver API.
-	name string
+	Name string
 	// Measurement to record for the data point.
-	value interface{}
+	Value interface{}
 	// Metrics with a defined instance id show up under the defined instances resources.
 	// One metric name can be shared across a number of instances to include on a single graph or for alerting.
 	// Custom metrics not associated with an instance id will be found under the Custom resource type when creating
 	// charts or alerting policies.
 	// [Optional]
-	instanceId string `json:",omitempty"`
+	InstanceId string `json:",omitempty"`
 }
 
 type GatewayMessage struct {
 	// Timestamp the gateway message is created.
-	timestamp int64
+	Timestamp int64
 	// Protocol version defining the schema of the gateway message.
-	proto_version int64
+	ProtocolVersion int64 `json:"proto_version"`
 	// Stackdriver assigned Customer Id.
 	// [Optional]
-	customer_id string `json:",omitempty"`
+	CustomerId string `json:"customer_id,omitempty"`
 	// Customer metrics to be sent to Stackdriver API.
 	// Each data point must have its own (not necessarily unique) name, value, and collected_at.
-	data []metric
+	Data []Metric `json:"data"`
 }
 
 // Wrapper struct to properly marshal JSON with 'gateway_msg' root value.
@@ -66,7 +66,7 @@ const (
 // Factory function to create a new gateway message.
 func NewGatewayMessage() *GatewayMessage {
 	timestamp := time.Now().Unix()
-	return &GatewayMessage{timestamp: timestamp, proto_version: apiProtocolVersion}
+	return &GatewayMessage{Timestamp: timestamp, ProtocolVersion: apiProtocolVersion}
 }
 
 // CustomMetric takes a name, instance id, collected-at and value to populates the data slice.
@@ -74,14 +74,14 @@ func (gwm *GatewayMessage) CustomMetric(n, id string, ca int64, v interface{}) e
 	if ca-time.Now().Unix() > 3600 {
 		return fmt.Errorf("Metric created_at value is older than one hour.")
 	}
-	gwm.data = append(gwm.data, metric{collectedAt: ca, name: n, value: v, instanceId: id})
+	gwm.Data = append(gwm.Data, Metric{CollectedAt: ca, Name: n, Value: v, InstanceId: id})
 	return nil
 }
 
 // Send utilizes HTTP POST to send all currently collected metrics to the Stackdriver API.
 func (sdc *StackdriverClient) Send(gwm GatewayMessage) error {
 	m := &GatewayMessageObject{Message: gwm}
-	m.Message.customer_id = sdc.CustomerId
+	m.Message.CustomerId = sdc.CustomerId
 
 	body, err := json.Marshal(m)
 	if err != nil {
