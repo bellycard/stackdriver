@@ -1,6 +1,27 @@
 # [Stackdriver](http://www.stackdriver.com/) API Library
 
-A client library for accessing the Stackdriver API.
+A client library for accessing the Stackdriver API. Currently implements only the custom metric API.
+
+
+## Usage
+
+```
+import "github.com/bellycard/stackdriver"
+
+// Create new Stackdriver API client.
+client := stackdriver.NewStackdriverClient("apikey", "customerid")
+
+// Create new Stackdriver API gateway message.
+apiMessages := stackdriver.NewGatewayMessage()
+
+// Populate gateway message with metrics.
+apiMessages.CustomMetric("my-metric1","i-axd939f",1395080486,50)
+apiMessages.CustomMetric("my-metric2","i-afdsf9f",1395080487,6.5)
+apiMessages.CustomMetric("my-metric3","i-a3d923f",1395080484,25)
+
+// Send gateway message to Stackdriver API.
+client.Send(apiMessages)
+```
 
 
 ## Author(s) & Credit
