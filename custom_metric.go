@@ -27,15 +27,15 @@ type Metric struct {
 	// If value is over an hour before current time the measurement will be rejected.
 	CollectedAt int64 `json:"collected_at"`
 	// Name of the custom metric as represented in the Stackdriver API.
-	Name string
+	Name string `json:"name"`
 	// Measurement to record for the data point.
-	Value interface{}
+	Value interface{} `json:"value"`
 	// Metrics with a defined instance id show up under the defined instances resources.
 	// One metric name can be shared across a number of instances to include on a single graph or for alerting.
 	// Custom metrics not associated with an instance id will be found under the Custom resource type when creating
 	// charts or alerting policies.
 	// [Optional]
-	InstanceId string `json:",omitempty"`
+	InstanceId string `json:"instance_id,omitempty"`
 }
 
 type GatewayMessage struct {
