@@ -1,6 +1,11 @@
 # [Stackdriver](http://www.stackdriver.com/) API Library
 
-A client library for accessing the Stackdriver API. Currently implements only the custom metric API.
+A client library for accessing the Stackdriver API.
+
+Currently implemented:
+* Custom Metrics
+* Code Deploy Events
+* Annotation Events
 
 
 ## Usage
