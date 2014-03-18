@@ -70,12 +70,9 @@ func NewGatewayMessage() *GatewayMessage {
 }
 
 // CustomMetric takes a name, instance id, collected-at and value to populates the data slice.
-func (gwm *GatewayMessage) CustomMetric(n, id string, ca int64, v interface{}) error {
-	if ca-time.Now().Unix() > 3600 {
-		return fmt.Errorf("Metric created_at value is older than one hour.")
-	}
+func (gwm *GatewayMessage) CustomMetric(n, id string, ca int64, v interface{}) {
 	gwm.Data = append(gwm.Data, Metric{CollectedAt: ca, Name: n, Value: v, InstanceId: id})
-	return nil
+	return
 }
 
 // Send utilizes HTTP POST to send all currently collected metrics to the Stackdriver API.
