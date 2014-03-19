@@ -14,7 +14,7 @@ Currently implemented:
 import "github.com/bellycard/stackdriver"
 
 // Create new Stackdriver API client.
-client := stackdriver.NewStackdriverClient("apikey", "customerid")
+client := stackdriver.NewStackdriverClient("apikey")
 
 // Create new Stackdriver API gateway message.
 apiMessages := stackdriver.NewGatewayMessage()
