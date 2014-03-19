@@ -21,6 +21,6 @@ type StackdriverClient struct {
 }
 
 // New returns a new client for the Stackdriver API.
-func NewStackdriverClient(ak, cid string) *StackdriverClient {
+func NewStackdriverClient(ak string) *StackdriverClient {
 	return &StackdriverClient{ApiKey: ak}
 }
