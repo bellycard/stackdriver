@@ -18,12 +18,9 @@ package stackdriver
 type StackdriverClient struct {
 	// Stackdriver API key
 	ApiKey string
-	// Customer Identification
-	CustomerId string
 }
 
 // New returns a new client for the Stackdriver API.
 func NewStackdriverClient(ak, cid string) *StackdriverClient {
-	client := StackdriverClient{ApiKey: ak, CustomerId: cid}
-	return &client
+	return &StackdriverClient{ApiKey: ak}
 }

@@ -40,7 +40,7 @@ type Metric struct {
 
 type GatewayMessage struct {
 	// Timestamp the gateway message is created.
-	Timestamp int64
+	Timestamp int64 `json:"timestamp"`
 	// Protocol version defining the schema of the gateway message.
 	ProtocolVersion int64 `json:"proto_version"`
 	// Stackdriver assigned Customer Id.
@@ -49,11 +49,6 @@ type GatewayMessage struct {
 	// Customer metrics to be sent to Stackdriver API.
 	// Each data point must have its own (not necessarily unique) name, value, and collected_at.
 	Data []Metric `json:"data"`
-}
-
-// Wrapper struct to properly marshal JSON with 'gateway_msg' root value.
-type GatewayMessageObject struct {
-	Message GatewayMessage `json:"gateway_msg"`
 }
 
 const (
@@ -77,10 +72,8 @@ func (gwm *GatewayMessage) CustomMetric(n, id string, ca int64, v interface{}) {
 
 // Send utilizes HTTP POST to send all currently collected metrics to the Stackdriver API.
 func (sdc *StackdriverClient) Send(gwm GatewayMessage) error {
-	m := &GatewayMessageObject{Message: gwm}
-	m.Message.CustomerId = sdc.CustomerId
 
-	body, err := json.Marshal(m)
+	body, err := json.Marshal(gwm)
 	if err != nil {
 		return err
 	}
@@ -96,8 +89,8 @@ func (sdc *StackdriverClient) Send(gwm GatewayMessage) error {
 		return err
 	}
 
-	if (res.StatusCode > 200) || (res.StatusCode < 200) {
-		return fmt.Errorf("Unable to send to Stackdriver API. HTTP response code: %d", res.StatusCode)
+	if (res.StatusCode > 201) || (res.StatusCode < 200) {
+		return fmt.Errorf("Stackdriver API Connection Error StatusCode[%d]", res.StatusCode)
 	}
 	return nil
 }
