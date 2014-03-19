@@ -61,7 +61,7 @@ const (
 // Factory function to create a new gateway message.
 func NewGatewayMessage() GatewayMessage {
 	timestamp := time.Now().Unix()
-	return &GatewayMessage{Timestamp: timestamp, ProtocolVersion: apiProtocolVersion}
+	return GatewayMessage{Timestamp: timestamp, ProtocolVersion: apiProtocolVersion}
 }
 
 // CustomMetric takes a name, instance id, collected-at and value to populates the data slice.
