@@ -59,7 +59,7 @@ const (
 )
 
 // Factory function to create a new gateway message.
-func NewGatewayMessage() *GatewayMessage {
+func NewGatewayMessage() GatewayMessage {
 	timestamp := time.Now().Unix()
 	return &GatewayMessage{Timestamp: timestamp, ProtocolVersion: apiProtocolVersion}
 }
