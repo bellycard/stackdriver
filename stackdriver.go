@@ -14,7 +14,7 @@
 
 package stackdriver
 
-// The StatsdClient type defines the relevant properties of a StatsD connection.
+// The StackdriverClient type defines the relevant properties of a Stackdriver API connection.
 type StackdriverClient struct {
 	// Stackdriver API key
 	ApiKey string
