@@ -17,6 +17,7 @@ package stackdriver
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 )
@@ -79,7 +80,12 @@ func (sdc *StackdriverClient) NewAnnotationEvent(m, ab, l, iid string, ee int64)
 	}
 
 	if (res.StatusCode > 200) || (res.StatusCode < 200) {
-		return fmt.Errorf("Unable to send to Stackdriver event gateway API. HTTP response code: %d", res.StatusCode)
+		responseBody, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			return err
+		}
+
+		return fmt.Errorf("AnnotationEvent Stackdriver Error: %s", responseBody)
 	}
 	return nil
 }
