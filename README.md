@@ -1,5 +1,8 @@
 # [Stackdriver](http://www.stackdriver.com/) API Library
 
+**DEPRECATED**: This repo is no longer in use and is not being maintained. The authoritative version of this code base can be found at [https://github.com/AMeng/stackdriver](https://github.com/AMeng/stackdriver).
+
+
 A client library for accessing the Stackdriver API.
 
 Currently implemented:
