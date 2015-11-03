@@ -17,6 +17,7 @@ package stackdriver
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
@@ -90,7 +91,12 @@ func (sdc *StackdriverClient) Send(gwm GatewayMessage) error {
 	}
 
 	if (res.StatusCode > 201) || (res.StatusCode < 200) {
-		return fmt.Errorf("Stackdriver API Connection Error StatusCode[%d]", res.StatusCode)
+		responseBody, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			return err
+		}
+
+		return fmt.Errorf("CustomMetric Stackdriver Error: %s", responseBody)
 	}
 	return nil
 }

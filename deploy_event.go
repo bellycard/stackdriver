@@ -17,6 +17,7 @@ package stackdriver
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 )
@@ -65,7 +66,12 @@ func (sdc *StackdriverClient) NewDeployEvent(rid, db, dt, r string) error {
 	}
 
 	if (res.StatusCode > 200) || (res.StatusCode < 200) {
-		return fmt.Errorf("Unable to send to Stackdriver deploy event gateway API. HTTP response code: %d", res.StatusCode)
+		responseBody, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			return err
+		}
+
+		return fmt.Errorf("DeployEvent Stackdriver Error: %s", responseBody)
 	}
 	return nil
 }
