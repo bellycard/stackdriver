@@ -35,7 +35,7 @@ type Metric struct {
 	// Custom metrics not associated with an instance id will be found under the Custom resource type when creating
 	// charts or alerting policies.
 	// [Optional]
-	InstanceId string `json:"instance_id,omitempty"`
+	Instance string `json:"instance,omitempty"`
 }
 
 type GatewayMessage struct {
@@ -66,7 +66,7 @@ func NewGatewayMessage() GatewayMessage {
 
 // CustomMetric takes a name, instance id, collected-at and value to populates the data slice.
 func (gwm *GatewayMessage) CustomMetric(n, id string, ca int64, v interface{}) {
-	gwm.Data = append(gwm.Data, Metric{CollectedAt: ca, Name: n, Value: v, InstanceId: id})
+	gwm.Data = append(gwm.Data, Metric{CollectedAt: ca, Name: n, Value: v, Instance: id})
 	return
 }
 
